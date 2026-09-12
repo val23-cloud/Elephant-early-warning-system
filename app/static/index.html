@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Elephant Tracking System</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+:root{--forest:#163c2b;--leaf:#42a66b;--cream:#f5f2e9;--danger:#d94b4b}*{box-sizing:border-box}
+body{margin:0;font:15px system-ui;background:var(--cream);color:#17251d}header{padding:18px 28px;background:var(--forest);color:white;display:flex;justify-content:space-between;align-items:center}header h1{margin:0;font-size:22px}header small{opacity:.8}.wrap{padding:18px;max-width:1400px;margin:auto}.toolbar{display:flex;gap:10px;margin-bottom:14px}input,button{padding:10px;border:1px solid #bbb;border-radius:8px}input{flex:1}button{background:var(--leaf);color:white;border:0;cursor:pointer}.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}#map{height:520px;border-radius:14px;box-shadow:0 3px 15px #0002}.panel{background:white;border-radius:14px;padding:15px;box-shadow:0 3px 15px #0001;max-height:520px;overflow:auto}.alert{padding:10px;margin:8px 0;border-left:4px solid var(--danger);background:#fff2f2}.ok{color:#28784a}.muted{color:#667}table{width:100%;border-collapse:collapse;margin-top:16px;background:white}th,td{text-align:left;padding:10px;border-bottom:1px solid #eee}@media(max-width:800px){.grid{grid-template-columns:1fr}#map{height:420px}}
+</style></head><body>
+<header><div><h1>🐘 Elephant Tracking System</h1><small>Conservation operations dashboard</small></div><small>Vyalery & Kavya</small></header>
+<main class="wrap"><div class="toolbar"><input id="key" type="password" placeholder="Enter administrator key"><button onclick="loadAll()">Connect securely</button></div>
+<div class="grid"><div id="map"></div><section class="panel"><h2>Active alerts</h2><div id="alerts" class="muted">Enter the administrator key to load protected data.</div></section></div>
+<table><thead><tr><th>Elephant</th><th>Device</th><th>Last signal</th><th>Battery</th><th>Speed</th></tr></thead><tbody id="devices"></tbody></table></main>
+<script>
+const map=L.map('map').setView([12.9,74.86],10);L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap contributors',maxZoom:18}).addTo(map);let layers=[];
+async function api(path,opts={}){opts.headers={...(opts.headers||{}),'X-Admin-Key':document.querySelector('#key').value};let r=await fetch(path,opts);if(!r.ok)throw Error((await r.json()).detail||r.statusText);return r.json()}
+function clear(){layers.forEach(x=>map.removeLayer(x));layers=[]}
+async function loadAll(){try{let [ds,fs,as]=await Promise.all([api('/api/v1/devices/latest'),api('/api/v1/geofences'),api('/api/v1/alerts?unacknowledged_only=true')]);clear();let bounds=[];ds.forEach(d=>{if(d.latitude!=null){let m=L.marker([d.latitude,d.longitude]).addTo(map).bindPopup(`<b>${d.elephant_name}</b><br>${d.device_id}<br>Battery ${d.battery_percent}%`);layers.push(m);bounds.push([d.latitude,d.longitude])}});fs.forEach(f=>layers.push(L.circle([f.latitude,f.longitude],{radius:f.radius_m,color:'#d94b4b',fillOpacity:.12}).addTo(map).bindPopup(`<b>${f.name}</b><br>${f.kind}`)));if(bounds.length)map.fitBounds(bounds,{padding:[30,30],maxZoom:14});document.querySelector('#devices').innerHTML=ds.map(d=>`<tr><td>${d.elephant_name}</td><td>${d.device_id}</td><td>${d.recorded_at||'Never'}</td><td>${d.battery_percent??'-'}%</td><td>${d.speed_kmh??'-'} km/h</td></tr>`).join('');document.querySelector('#alerts').innerHTML=as.length?as.map(a=>`<div class="alert"><b>${a.severity.toUpperCase()}</b> · ${a.device_id}<br>${a.message}<br><small>${a.created_at}</small><br><button onclick="ack(${a.id})">Acknowledge</button></div>`).join(''):'<p class="ok">No active alerts</p>'}catch(e){document.querySelector('#alerts').innerHTML=`<div class="alert">${e.message}</div>`}}
+async function ack(id){await api(`/api/v1/alerts/${id}/acknowledge`,{method:'POST'});loadAll()}setInterval(()=>{if(document.querySelector('#key').value)loadAll()},30000);
+</script></body></html>
+
