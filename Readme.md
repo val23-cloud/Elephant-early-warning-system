@@ -1,6 +1,6 @@
 # Elephant Tracking System
 
-Conservation-focused Python MVP by **Vyalery and Kavya**.
+Conservation-focused Python MVP by **Vyalary and Kavya**.
 
 It receives GPS telemetry from elephant collars, stores movement history, detects entry into configurable danger zones, raises alerts, and shows an operations dashboard for authorized forest staff.
 
@@ -8,16 +8,42 @@ It receives GPS telemetry from elephant collars, stores movement history, detect
 
 ## Features
 
-- FastAPI REST service and interactive API documentation
-- SQLite database with no separate database server required
-- Device registration and API-key authentication
-- GPS telemetry ingestion and validation
-- Circular danger-zone geofencing using the Haversine formula
-- Alerts for danger-zone entry, low battery, overspeed, and stale devices
-- Live Leaflet map, device table, and alert acknowledgement
-- CSV movement export
-- Device simulator, automated tests, Dockerfile, and health endpoint
-- Public privacy-safe summary containing counts only
+* FastAPI REST service and interactive API documentation
+* SQLite database with no separate database server required
+* Device registration and API-key authentication
+* GPS telemetry ingestion and validation
+* Circular danger-zone geofencing using the Haversine formula
+* Alerts for danger-zone entry, low battery, overspeed, and stale devices
+* Live Leaflet map, device table, and alert acknowledgement
+* CSV movement export
+* Device simulator, automated tests, Dockerfile, and health endpoint
+* Public privacy-safe summary containing counts only
+
+## Project Screenshots
+
+### Save Elephants
+
+![Save Elephants](./save-elephants.jpeg)
+
+### Dashboard
+
+![Elephant Tracking Dashboard](./dashboard.jpeg)
+
+### Prototype Concept
+
+![Prototype Concept](./prototypeconcept.jpeg)
+
+### Database Schema
+
+![Database Schema](./database%20schema.jpeg)
+
+### Elephant Tracking System
+
+![Elephant Tracking System](./elephant%20tracking%20system.jpeg)
+
+### How to Implement
+
+![How to Implement](./how%20to%20implement.jpeg)
 
 ## Quick start
 
@@ -58,14 +84,14 @@ curl -X POST http://127.0.0.1:8000/api/v1/telemetry \
 
 ## Production checklist
 
-- Replace all development keys and use HTTPS/TLS.
-- Use one unique secret per collar and rotate compromised keys.
-- Restrict the dashboard to Forest Department/Veterinary staff.
-- Put the service behind a VPN or identity-aware proxy.
-- Replace console alerts with an approved SMS/WhatsApp/radio gateway.
-- Use PostgreSQL with encrypted backups for multi-station deployment.
-- Define geofences jointly with local officials and test alert escalation.
-- Retain exact coordinates only as long as operationally necessary.
+* Replace all development keys and use HTTPS/TLS.
+* Use one unique secret per collar and rotate compromised keys.
+* Restrict the dashboard to Forest Department/Veterinary staff.
+* Put the service behind a VPN or identity-aware proxy.
+* Replace console alerts with an approved SMS/WhatsApp/radio gateway.
+* Use PostgreSQL with encrypted backups for multi-station deployment.
+* Define geofences jointly with local officials and test alert escalation.
+* Retain exact coordinates only as long as operationally necessary.
 
 ## Project layout
 
@@ -74,9 +100,9 @@ app/                 API, database, geofencing and dashboard
 scripts/             demo data and tracker simulator
 tests/               automated tests
 data/                runtime SQLite database (created automatically)
+images/              project screenshots and documentation images
 ```
 
 ## Authors
 
-Vyalery and Kavya
-
+Vyalary and Kavya
