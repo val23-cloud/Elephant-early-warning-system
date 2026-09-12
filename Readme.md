@@ -35,15 +35,15 @@ It receives GPS telemetry from elephant collars, stores movement history, detect
 
 ### Database Schema
 
-![Database Schema](./database%20schema.jpeg)
+![Database Schema](./databaseschema.jpeg)
 
 ### Elephant Tracking System
 
-![Elephant Tracking System](./elephant%20tracking%20system.jpeg)
+![Elephant Tracking System](./elephanttrackingsystem.jpeg)
 
 ### How to Implement
 
-![How to Implement](./how%20to%20implement.jpeg)
+![How to Implement](./howtoimplement.jpeg)
 
 ## Quick start
 
