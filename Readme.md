@@ -31,7 +31,7 @@ It receives GPS telemetry from elephant collars, stores movement history, detect
 
 ### Prototype Concept
 
-![Prototype Concept](./prototype%20concept.jpeg)
+![Prototype Concept](./prototypeconcept.jpeg)
 
 ### Database Schema
 
